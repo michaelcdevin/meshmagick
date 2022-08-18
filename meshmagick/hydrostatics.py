@@ -20,6 +20,8 @@ __email__ = "Francois.Rongere@dice-engineering.com"
 __status__ = "Development"
 
 
+class EquilibriumError(Exception):
+    pass
 
 def compute_hydrostatics(mesh, cog, rho_water, grav, rotmat_corr=np.eye(3), z_corr=0.,
                          at_cog=False, lpp=None, orig_at_ap=False):
@@ -228,8 +230,7 @@ def displacement_equilibrium(mesh, disp_tons, rho_water, grav, cog=np.zeros(3), 
     while True:
 
         if iter == itermax:
-            print("No convergence after %s" % itermax)
-            break
+            raise EquilibriumError("No convergence after %s" % itermax)
 
         try:
             hs_data = compute_hydrostatics(mesh, cog, rho_water, grav, z_corr=z_corr)
@@ -297,8 +298,7 @@ def full_equilibrium(mesh, cog, disp_tons, rho_water, grav, reltol=1e-6, verbose
     while True:
 
         if iter == itermax:
-            print("No convergence after %s" % itermax)
-            break
+            raise EquilibriumError("No convergence after %s" % itermax)
 
         wcog = cog.copy()
         wcog = np.dot(rotmat_corr, wcog)
