@@ -5,7 +5,7 @@
 import numpy as np
 import math
 
-from .mesh_clipper import MeshClipper
+from .mesh_clipper import MeshClipper, MeshClipperError, OpenCurveError
 from .rotations import cardan_to_rotmat, rotmat_to_cardan
 from math import degrees, radians
 
@@ -33,10 +33,7 @@ def compute_hydrostatics(mesh, cog, rho_water, grav, rotmat_corr=np.eye(3), z_co
     wcog = np.dot(rotmat_corr, wcog)
     wcog[2] += z_corr
 
-    try:
-        clipper = MeshClipper(wmesh, assert_closed_boundaries=True, verbose=False)
-    except RuntimeError as err:
-        raise err
+    clipper = MeshClipper(wmesh, assert_closed_boundaries=True, verbose=False)
 
     cmesh = clipper.clipped_mesh
 
@@ -234,7 +231,7 @@ def displacement_equilibrium(mesh, disp_tons, rho_water, grav, cog=np.zeros(3), 
 
         try:
             hs_data = compute_hydrostatics(mesh, cog, rho_water, grav, z_corr=z_corr)
-        except RuntimeError as err:
+        except MeshClipperError as err:
             position = err.args[2]
             if position == 'below':
                 z_corr = -zmax + (zmax - zmin) * 1e-4  # FIXME: is this choice robust ?
