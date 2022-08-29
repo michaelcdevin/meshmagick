@@ -6,7 +6,11 @@
 from .mesh import *
 
 class MeshClipperError(Exception):
-    pass
+    
+    def __init__(self, message, direction):
+        self.direction = direction
+        self.message = message
+        super().__init__(self.message)
 
 class OpenCurveError(Exception):
     pass

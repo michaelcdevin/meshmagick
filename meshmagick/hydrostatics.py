@@ -232,7 +232,7 @@ def displacement_equilibrium(mesh, disp_tons, rho_water, grav, cog=np.zeros(3), 
         try:
             hs_data = compute_hydrostatics(mesh, cog, rho_water, grav, z_corr=z_corr)
         except MeshClipperError as err:
-            position = err.args[2]
+            position = err.direction
             if position == 'below':
                 z_corr = -zmax + (zmax - zmin) * 1e-4  # FIXME: is this choice robust ?
                 hs_data = compute_hydrostatics(mesh, cog, rho_water, grav, z_corr=z_corr)
