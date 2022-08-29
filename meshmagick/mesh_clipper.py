@@ -5,6 +5,11 @@
 
 from .mesh import *
 
+class MeshClipperError(Exception):
+    pass
+
+class OpenCurveError(Exception):
+    pass
 
 class MeshClipper(object):
     """A class to perform mesh clipping operations.
@@ -128,10 +133,10 @@ class MeshClipper(object):
 
         if np.all(vertices_positions['vertices_above_mask']):
             # Cannot clip as this mesh is totally above or below the clipping plane. Throwing an error
-            raise RuntimeError("Mesh does not crosses the clipping plane", "above")
+            raise MeshClipperError("Mesh does not crosses the clipping plane", "above")
 
         if np.all(vertices_positions['vertices_below_mask']):
-            raise RuntimeError("Mesh does not crosses the clipping plane", "below")
+            raise MeshClipperError("Mesh does not crosses the clipping plane", "below")
 
         self.__internals__.update(vertices_positions)
 
@@ -741,7 +746,7 @@ class MeshClipper(object):
                         for line in open_lines:
                             print(line)
                             
-                        raise RuntimeError('Open intersection curve found with assert_closed_boundaries option enabled. Files full_debug.vtp, crown_debug.vtp and clipped_crown_debug.vtp written.')
+                        raise OpenCurveError('Open intersection curve found with assert_closed_boundaries option enabled. Files full_debug.vtp, crown_debug.vtp and clipped_crown_debug.vtp written.')
 
                 break
 
