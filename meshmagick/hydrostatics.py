@@ -4,6 +4,7 @@
 
 import numpy as np
 import math
+import warnings
 
 from .mesh_clipper import MeshClipper, MeshClipperError, OpenCurveError
 from .rotations import cardan_to_rotmat, rotmat_to_cardan
