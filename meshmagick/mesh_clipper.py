@@ -668,7 +668,7 @@ class MeshClipper(object):
                     mmio.write_VTP('crown_debug.vtp', crown_mesh.vertices, crown_mesh.faces)
                 except:
                     pass
-                raise Exception("Face %u clipping case %s not known." % (face_id, face_type))
+                raise OpenCurveError("Face %u clipping case %s not known." % (face_id, face_type))
 
             # Building boundary connectivity
             if boundary_edge is not None:
