@@ -34,6 +34,11 @@ __status__ = "Development"
 
 from .rotations import cardan_to_rotmat, rotmat_to_cardan
 
+
+class MeshError(Exception):
+    pass
+
+
 def _rodrigues(thetax, thetay):
     """
     Computes the rotation matrix corresponding to angles thetax and thetay using the Olinde-Rodrigues formula
@@ -349,7 +354,7 @@ class Plane(object):
         p1n = np.dot(p1, self.normal)
         t = (p0n - self._scalar) / (p0n - p1n)
         if t < 0. or t > 1.:
-            raise RuntimeError('Intersection is outside the edge')
+            raise MeshError('Intersection is outside the edge')
         return (1-t) * p0 + t * p1
 
     def orthogonal_projection_on_plane(self, points):
@@ -980,7 +985,7 @@ class Mesh(object):
 
                     boundary_edges[i_v_orig] = i_v_target
                 else:
-                    raise RuntimeError('Unexpected error while computing mesh connectivities')
+                    raise MeshError('Unexpected error while computing mesh connectivities')
 
         # Computing boundaries
         boundaries = list()
