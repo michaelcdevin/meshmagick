@@ -678,7 +678,10 @@ class MeshClipper(object):
         if len(intersections) > 0:
             vertices = np.concatenate((vertices, intersections))
         
-        clipped_crown_mesh = Mesh(vertices, crown_faces)
+        try:
+            clipped_crown_mesh = Mesh(vertices, crown_faces)
+        except IndexError:
+            raise MeshError('Clipped mesh does not have any faces.')
 
         # TODO: faire un merge uniquement sur la liste instersections et non sur tout le maillage clipped_crown
         # FIXME: potentiellement, un bug a ete introduit ici !!! --> l'update n'est plus bon sur les dictionnaires...
