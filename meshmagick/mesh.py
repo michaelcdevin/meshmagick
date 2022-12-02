@@ -1013,7 +1013,7 @@ class Mesh(object):
                 break
 
         if not mesh_closed:
-            print('FOUND OPEN BOUNDARY!!!')
+            raise MeshError('Mesh has an open boundary.')
 
         connectivity = {'v_v': v_v,
                         'v_f': v_f,
