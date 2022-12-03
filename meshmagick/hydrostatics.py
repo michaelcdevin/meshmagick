@@ -7,6 +7,7 @@ import math
 import warnings
 
 from .mesh_clipper import MeshClipper, MeshClipperError, OpenCurveError
+from .mesh import MeshError
 from .rotations import cardan_to_rotmat, rotmat_to_cardan
 from math import degrees, radians
 
@@ -72,7 +73,8 @@ def compute_hydrostatics(mesh, cog, rho_water, grav, rotmat_corr=np.eye(3), z_co
         # TODO: voir si on conserve ce test...
         if np.any(np.fabs(polyverts[:, 2]) > 1e-3):
             print('The intersection polygon is not on the plane z=0')
-
+        if np.size(polyverts) == 0:
+            raise MeshError('At least one polygon on the clipped mesh has no vertices')
         xi, yi = polyverts[0, :2]
         for (xii, yii) in polyverts[1:, :2]:
             dx = xii - xi
