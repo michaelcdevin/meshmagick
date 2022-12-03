@@ -12,6 +12,10 @@ class MeshClipperError(Exception):
         self.message = message
         super().__init__(self.message)
 
+    def __reduce__(self):
+        return (MeshClipperError, (self.message, self.direction))
+
+
 class OpenCurveError(Exception):
     pass
 
