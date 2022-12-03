@@ -230,19 +230,7 @@ def displacement_equilibrium(mesh, disp_tons, rho_water, grav, cog=np.zeros(3), 
         if iter == itermax:
             raise EquilibriumError("No convergence after %s" % itermax)
 
-        try:
-            hs_data = compute_hydrostatics(mesh, cog, rho_water, grav, z_corr=z_corr)
-        except MeshClipperError as err:
-            position = err.direction
-            if position == 'below':
-                z_corr = -zmax + (zmax - zmin) * 1e-4  # FIXME: is this choice robust ?
-                hs_data = compute_hydrostatics(mesh, cog, rho_water, grav, z_corr=z_corr)
-                warnings.warn(
-                    "Impossible to reach a displacement of %.3f tons because of the mesh extend. Limited to %.3f tons" %
-                    (disp_tons, hs_data['disp_mass'] * 0.001))
-                return z_corr
-            else:
-                raise err
+        hs_data = compute_hydrostatics(mesh, cog, rho_water, grav, z_corr=z_corr)
 
         disp_volume = hs_data["disp_volume"]
         waterplane_area = hs_data["waterplane_area"]
