@@ -735,7 +735,7 @@ class MeshClipper(object):
 
                 if self._assert_closed_boundaries:
                     if len(open_lines) > 0:
-                        raise OpenCurveError('Open intersection curve found with assert_closed_boundaries option enabled. Files full_debug.vtp, crown_debug.vtp and clipped_crown_debug.vtp written.')
+                        raise OpenCurveError('Open intersection curve found with assert_closed_boundaries option enabled.')
 
                 break
 
