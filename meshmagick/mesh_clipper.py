@@ -661,13 +661,6 @@ class MeshClipper(object):
                 boundary_edge = None
                 
             else:
-                try:
-                    from . import mmio
-                    mmio.write_VTP('full_debug.vtp', self.source_mesh.vertices, self.source_mesh.faces)
-                    # mmio.write_VTP('clipped_crown_debug.vtp', clipped_crown_mesh.vertices, clipped_crown_mesh.faces)
-                    mmio.write_VTP('crown_debug.vtp', crown_mesh.vertices, crown_mesh.faces)
-                except:
-                    pass
                 raise OpenCurveError("Face %u clipping case %s not known." % (face_id, face_type))
 
             # Building boundary connectivity
@@ -742,17 +735,6 @@ class MeshClipper(object):
 
                 if self._assert_closed_boundaries:
                     if len(open_lines) > 0:
-                        try:
-                            from . import mmio
-                            mmio.write_VTP('full_debug.vtp', self.source_mesh.vertices, self.source_mesh.faces)
-                            mmio.write_VTP('clipped_crown_debug.vtp', clipped_crown_mesh.vertices, clipped_crown_mesh.faces)
-                            mmio.write_VTP('crown_debug.vtp', crown_mesh.vertices, crown_mesh.faces)
-                        except:
-                            pass
-                        
-                        for line in open_lines:
-                            print(line)
-                            
                         raise OpenCurveError('Open intersection curve found with assert_closed_boundaries option enabled. Files full_debug.vtp, crown_debug.vtp and clipped_crown_debug.vtp written.')
 
                 break
