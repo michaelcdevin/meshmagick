@@ -62,6 +62,8 @@ def compute_hydrostatics(mesh, cog, rho_water, grav, rotmat_corr=np.eye(3), z_co
     ymax = []
 
     polygons = clipper.closed_polygons
+    if np.size(polygons) == 0:
+        raise MeshError('Clipped mesh has no closed entities.')
     for polygon in polygons:
         polyverts = clipper.clipped_crown_mesh.vertices[polygon]
 
@@ -73,8 +75,6 @@ def compute_hydrostatics(mesh, cog, rho_water, grav, rotmat_corr=np.eye(3), z_co
         # TODO: voir si on conserve ce test...
         if np.any(np.fabs(polyverts[:, 2]) > 1e-3):
             print('The intersection polygon is not on the plane z=0')
-        if np.size(polyverts) == 0:
-            raise MeshError('At least one polygon on the clipped mesh has no vertices')
         xi, yi = polyverts[0, :2]
         for (xii, yii) in polyverts[1:, :2]:
             dx = xii - xi
